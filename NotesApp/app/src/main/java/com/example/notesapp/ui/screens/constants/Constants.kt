@@ -1,4 +1,4 @@
-package com.example.notesapp.core.constants
+package com.example.notesapp.ui.screens.constants
 
 const val SPLASH_ROUTE = "splash_route"
 const val MAIN_ROUTE = "main_route"

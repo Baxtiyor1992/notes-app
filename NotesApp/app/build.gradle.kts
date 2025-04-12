@@ -85,6 +85,10 @@ dependencies {
     ksp("androidx.hilt:hilt-compiler:1.2.0")
     implementation( "androidx.work:work-runtime-ktx:2.9.0")
 
+    //Bottom Nav Bar
+    implementation ("com.canopas.compose-animated-navigationbar:bottombar:1.0.1")
+
+
 
 
     implementation(libs.androidx.core.ktx)

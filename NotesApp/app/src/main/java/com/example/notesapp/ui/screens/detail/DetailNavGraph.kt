@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.notesapp.core.constants.DETAIL_ROUTE
-import com.example.notesapp.core.constants.DETAIL_SCREEN
+import com.example.notesapp.ui.screens.constants.DETAIL_ROUTE
+import com.example.notesapp.ui.screens.constants.DETAIL_SCREEN
 
 fun NavGraphBuilder.setUpDetailNavigation(navHostController: NavHostController) {
     navigation(

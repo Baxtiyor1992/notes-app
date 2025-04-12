@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.example.notesapp.ui.screens.nav_graph.SetUpNavigation
+import com.example.notesapp.ui.screens.systembar_color.SystemBarColorChanger
 import com.example.notesapp.ui.theme.NotesAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
                 SetUpNavigation(
                     navHostController = navController
                 )
+                SystemBarColorChanger()
             }
         }
     }

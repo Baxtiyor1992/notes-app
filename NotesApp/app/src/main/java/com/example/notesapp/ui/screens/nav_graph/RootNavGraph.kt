@@ -3,7 +3,7 @@ package com.example.notesapp.ui.screens.nav_graph
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.notesapp.core.constants.SPLASH_ROUTE
+import com.example.notesapp.ui.screens.constants.SPLASH_ROUTE
 import com.example.notesapp.ui.screens.detail.setUpDetailNavigation
 import com.example.notesapp.ui.screens.main.setUpMainNavigation
 import com.example.notesapp.ui.screens.splash.setUpSplashNavigation

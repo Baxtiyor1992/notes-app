@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.notesapp.core.constants.SPLASH_ROUTE
-import com.example.notesapp.core.constants.SPLASH_SCREEN
+import com.example.notesapp.ui.screens.constants.SPLASH_ROUTE
+import com.example.notesapp.ui.screens.constants.SPLASH_SCREEN
 
 fun NavGraphBuilder.setUpSplashNavigation(navHostController: NavHostController) {
     navigation(
