@@ -1,4 +1,4 @@
-package com.example.notesapp.ui.screens.main.detail
+package com.example.notesapp.ui.screen.main.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

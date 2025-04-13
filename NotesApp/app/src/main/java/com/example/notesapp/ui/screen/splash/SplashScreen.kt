@@ -1,4 +1,4 @@
-package com.example.notesapp.ui.screens.splash
+package com.example.notesapp.ui.screen.splash
 
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.animateFloatAsState
@@ -37,8 +37,9 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.notesapp.R
-import com.example.notesapp.ui.utill.MAIN_ROUTE
 import com.example.notesapp.ui.theme.PrimaryColor
+import com.example.notesapp.ui.utill.MAIN_ROUTE
+import com.example.notesapp.ui.utill.SPLASH_ROUTE
 import kotlinx.coroutines.delay
 
 @Preview
@@ -56,7 +57,7 @@ fun SplashScreen(
         Spacer(modifier = modifier.weight(1.4f))
         LottieAnimation()
         Spacer(modifier = modifier.weight(1.7f))
-          AnimatedText()
+        AnimatedText()
         Spacer(modifier = modifier.weight(0.5f))
         NavigateToMain(navHostController = navHostController)
     }
@@ -68,8 +69,7 @@ fun AnimatedText(modifier: Modifier = Modifier) {
     var isVisible by remember { mutableStateOf(false) }
     val alphaState by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f, animationSpec = tween(
-            durationMillis = 1000,
-            easing = EaseIn
+            durationMillis = 1000, easing = EaseIn
         )
     )
 
@@ -98,7 +98,11 @@ fun NavigateToMain(
 ) {
     LaunchedEffect(key1 = Unit) {
         delay(2500)
-        navHostController.navigate(MAIN_ROUTE)
+        navHostController.navigate(MAIN_ROUTE) {
+            popUpTo(route = SPLASH_ROUTE) {
+                inclusive = true
+            }
+        }
     }
 }
 

@@ -7,6 +7,7 @@ const val DETAIL_ROUTE = "detail_route"
 const val SPLASH_SCREEN = "splash_screen"
 const val DETAIL_SCREEN = "detail_screen"
 const val MAIN_SCREEN = "main_screen"
+const val SEARCH_SCREEN = "search_screen"
 
 const val HOME_PAGE = "home_page"
 const val ADD_PAGE = "add_page"

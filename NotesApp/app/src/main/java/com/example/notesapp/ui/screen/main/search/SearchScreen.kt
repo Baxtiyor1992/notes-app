@@ -1,16 +1,15 @@
-package com.example.notesapp.ui.screens.main.home.add
+package com.example.notesapp.ui.screen.main.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import com.example.notesapp.ui.theme.PrimaryColor
 
 @Composable
-fun AddNotePage(modifier: Modifier = Modifier) {
-
-    Box(modifier
+fun SearchScreen(modifier: Modifier = Modifier) {
+    Box(modifier = modifier
         .fillMaxSize()
-        .background(color = Color.Red))
+        .background(color = PrimaryColor))
 }

@@ -1,4 +1,4 @@
-package com.example.notesapp.ui.screens.splash
+package com.example.notesapp.ui.screen.splash
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.notesapp.ui.utill.SPLASH_ROUTE
-import com.example.notesapp.ui.screens.main.main_nav.setUpMainNavigation
-import com.example.notesapp.ui.screens.splash.setUpSplashNavigation
+import com.example.notesapp.ui.screen.main.main_nav.setUpMainNavigation
+import com.example.notesapp.ui.screen.splash.setUpSplashNavigation
 
 
 @Composable

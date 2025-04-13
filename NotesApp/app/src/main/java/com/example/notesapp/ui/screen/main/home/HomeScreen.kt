@@ -1,4 +1,4 @@
-package com.example.notesapp.ui.screens.main.home
+package com.example.notesapp.ui.screen.main.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -27,11 +27,12 @@ import androidx.navigation.compose.rememberNavController
 import com.PratikFagadiya.smoothanimationbottombar.model.SmoothAnimationBottomBarScreens
 import com.PratikFagadiya.smoothanimationbottombar.properties.BottomBarProperties
 import com.PratikFagadiya.smoothanimationbottombar.ui.SmoothAnimationBottomBar
-import com.example.notesapp.ui.screens.main.home.add.AddNotePage
-import com.example.notesapp.ui.screens.main.home.dashboard.HomePage
-import com.example.notesapp.ui.screens.main.home.topic.TopicPage
+import com.example.notesapp.ui.screen.main.home.add.AddNotePage
+import com.example.notesapp.ui.screen.main.home.dashboard.DashboardPage
+import com.example.notesapp.ui.screen.main.home.topic.TopicPage
 import com.example.notesapp.ui.theme.ActiveIndicatorColor
 import com.example.notesapp.ui.theme.PrimaryColor
+import com.example.notesapp.ui.utill.SEARCH_SCREEN
 
 @Composable
 fun MainScreen(
@@ -74,7 +75,7 @@ fun MainScreen(
         },
         topBar = {
             TopAppBar {
-                navHostController.navigate()
+                navHostController.navigate(route = SEARCH_SCREEN)
             }
         }) { innerPadding ->
         BottomBarNavHost(
@@ -108,7 +109,7 @@ fun BottomBarNavHost(
         navController = bottomBarNavController,
         modifier = modifier
     ) {
-        composable(route = BottomBarNavigation.HomePage.route) { HomePage(mainNavController = mainNavController) }
+        composable(route = BottomBarNavigation.HomePage.route) { DashboardPage(mainNavController = mainNavController) }
         composable(route = BottomBarNavigation.AddPage.route) { AddNotePage() }
         composable(route = BottomBarNavigation.TopicPage.route) { TopicPage() }
     }

@@ -1,4 +1,4 @@
-package com.example.notesapp.ui.screens.main.home
+package com.example.notesapp.ui.screen.main.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
