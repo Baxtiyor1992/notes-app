@@ -1,4 +1,4 @@
-package com.example.notesapp.core.utill
+package com.example.notesapp.ui.utill
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height

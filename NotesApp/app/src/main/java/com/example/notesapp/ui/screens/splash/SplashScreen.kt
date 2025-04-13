@@ -37,7 +37,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.notesapp.R
-import com.example.notesapp.ui.screens.constants.MAIN_ROUTE
+import com.example.notesapp.ui.utill.MAIN_ROUTE
 import com.example.notesapp.ui.theme.PrimaryColor
 import kotlinx.coroutines.delay
 

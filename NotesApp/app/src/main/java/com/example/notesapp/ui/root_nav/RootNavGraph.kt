@@ -1,11 +1,10 @@
-package com.example.notesapp.ui.screens.nav_graph
+package com.example.notesapp.ui.root_nav
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.notesapp.ui.screens.constants.SPLASH_ROUTE
-import com.example.notesapp.ui.screens.detail.setUpDetailNavigation
-import com.example.notesapp.ui.screens.main.setUpMainNavigation
+import com.example.notesapp.ui.utill.SPLASH_ROUTE
+import com.example.notesapp.ui.screens.main.main_nav.setUpMainNavigation
 import com.example.notesapp.ui.screens.splash.setUpSplashNavigation
 
 
@@ -19,6 +18,5 @@ fun SetUpNavigation(
     ) {
         setUpSplashNavigation(navHostController = navHostController)
         setUpMainNavigation(navHostController = navHostController)
-        setUpDetailNavigation(navHostController = navHostController)
     }
 }

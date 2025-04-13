@@ -86,7 +86,7 @@ dependencies {
     implementation( "androidx.work:work-runtime-ktx:2.9.0")
 
     //Bottom Nav Bar
-    implementation ("com.canopas.compose-animated-navigationbar:bottombar:1.0.1")
+    implementation ("com.github.PratikFagadiya:AnimatedSmoothBottomNavigation-JetpackCompose:1.1.2")
 
 
 
