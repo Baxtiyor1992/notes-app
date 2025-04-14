@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.notesapp.ui.root_nav.SetUpNavigation
-import com.example.notesapp.ui.utill.SystemBarColorChanger
 import com.example.notesapp.ui.theme.NotesAppTheme
+import com.example.notesapp.ui.utill.SystemBarColorChanger
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 
@@ -19,7 +22,8 @@ class MainActivity : ComponentActivity() {
             NotesAppTheme {
                 val navController = rememberNavController()
                 SetUpNavigation(
-                    navHostController = navController
+                    navHostController = navController,
+                    sharedViewModel = hiltViewModel()
                 )
                 SystemBarColorChanger()
             }

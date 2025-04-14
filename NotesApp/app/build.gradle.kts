@@ -88,6 +88,8 @@ dependencies {
     //Bottom Nav Bar
     implementation ("com.github.PratikFagadiya:AnimatedSmoothBottomNavigation-JetpackCompose:1.1.2")
 
+    //Swipe
+    implementation ("me.saket.swipe:swipe:1.3.0")
 
 
 
