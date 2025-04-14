@@ -1,6 +1,8 @@
 package uz.polat.noteappatto.ui.screens.main
 
+import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -32,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +45,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -51,6 +56,7 @@ import uz.polat.noteappatto.ui.components.CategoryItem
 import uz.polat.noteappatto.ui.components.NoteItem
 import uz.polat.noteappatto.ui.components.SettingsBottomSheet
 import uz.polat.noteappatto.ui.components.TopicAddBottomSheet
+import uz.polat.noteappatto.ui.theme.isDarkMode
 import uz.polat.noteappatto.utils.TOPIC_ADD
 
 class MainScreen : Screen {
@@ -68,10 +74,22 @@ fun MainScreenContent(
     state: State<MainScreenContracts.UIState>,
     onEventDispatcher: (MainScreenContracts.Intent) -> Unit
 ) {
-    val selected = remember { mutableIntStateOf(0) }
+//    val selected = remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
     var isClicked = true
     val coroutineScope = rememberCoroutineScope()
 
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isDarkMode
+    val backgroundColor = MaterialTheme.colorScheme.background
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = backgroundColor,
+            darkIcons = useDarkIcons
+        )
+    }
 
     if (state.value.isAddTopicSheetOpen) {
         TopicAddBottomSheet(
@@ -87,11 +105,15 @@ fun MainScreenContent(
     if (state.value.isSettingsSheetOpen) {
         SettingsBottomSheet(
             isDarkMode = state.value.isDarkMode,
+            currentLang = state.value.currentLang,
             onCheckedChanged = {
                 onEventDispatcher.invoke(MainScreenContracts.Intent.OnToggleThemeMode(it))
             },
             onDismissRequest = {
                 onEventDispatcher.invoke(MainScreenContracts.Intent.OnDismissSettingsBottomSheet)
+            },
+            onLanguageChanged = {
+                onEventDispatcher.invoke(MainScreenContracts.Intent.LangChange(it))
             }
         )
     }
@@ -155,7 +177,7 @@ fun MainScreenContent(
                 ) {
                     CategoryItem(
                         topic = state.value.topics[it],
-                        isSelected = it == selected.intValue,
+                        isSelected = it == state.value.selectedTopic,
 
                     ) {
                         if (state.value.topics[it].name == TOPIC_ADD) {
@@ -164,9 +186,8 @@ fun MainScreenContent(
                                 MainScreenContracts.Intent.OnClickAddCategory
                             )
                         } else {
-                            selected.intValue = it
                             onEventDispatcher.invoke(
-                                MainScreenContracts.Intent.OnClickCategory(state.value.topics[it])
+                                MainScreenContracts.Intent.OnClickCategory(state.value.topics[it],it)
                             )
                         }
                     }

@@ -2,6 +2,7 @@ package uz.polat.noteappatto.ui.components
 
 import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +23,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -36,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.room.util.TableInfo
 import uz.polat.noteappatto.R
+import uz.polat.noteappatto.ui.theme.isDarkMode
 import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.ui.theme.plainGreyColor
 import uz.polat.noteappatto.utils.TOPIC_COLORS
@@ -52,8 +57,10 @@ import uz.polat.noteappatto.utils.TOPIC_COLORS
 @Composable
 fun SettingsBottomSheet(
     isDarkMode: Boolean,
+    currentLang: String,
     onDismissRequest: () -> Unit,
     onCheckedChanged: (Boolean) -> Unit,
+    onLanguageChanged: (Boolean) -> Unit,
 ) {
 
     ModalBottomSheet(
@@ -84,7 +91,7 @@ fun SettingsBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding( vertical = 16.dp),
+                    .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -103,6 +110,44 @@ fun SettingsBottomSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.language),
+                    style = MaterialTheme.typography.bodyLarge
+                        .copy(color = MaterialTheme.colorScheme.onBackground)
+                )
+
+                Switch(
+                    checked = currentLang == "uz",
+                    onCheckedChange = onLanguageChanged,
+                    thumbContent = {
+                        if (currentLang == "uz") {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_flag_uzs),
+                                contentDescription = ""
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_flag_usd),
+                                contentDescription = ""
+                            )
+                        }
+                    },
+                    colors = SwitchDefaults.colors(
+                        checkedTrackColor = Color.Transparent,
+                        uncheckedTrackColor = Color.Transparent,
+                        checkedThumbColor = Color.Transparent,
+                        uncheckedThumbColor = Color.Transparent,
+                        checkedBorderColor = MaterialTheme.colorScheme.onBackground,
+                        uncheckedBorderColor = MaterialTheme.colorScheme.onBackground
+                    )
+                )
+            }
 
 
             Spacer(modifier = Modifier.height(16.dp))

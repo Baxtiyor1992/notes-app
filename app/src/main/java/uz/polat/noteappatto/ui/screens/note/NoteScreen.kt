@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -60,6 +63,7 @@ import uz.polat.noteappatto.ui.components.QuoteText
 import uz.polat.noteappatto.ui.components.RoundedActionButton
 import uz.polat.noteappatto.ui.components.SaveCancelButton
 import uz.polat.noteappatto.ui.components.TopicAddBottomSheet
+import uz.polat.noteappatto.ui.theme.isDarkMode
 import uz.polat.noteappatto.utils.TOPIC_ADD
 import uz.polat.noteappatto.utils.showToast
 
@@ -90,6 +94,18 @@ fun NoteScreenContent(
     showDeleteButton: Boolean = true,
     onEventDispatcher: (NoteScreenContracts.Intent) -> Unit,
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isDarkMode
+    val backgroundColor = MaterialTheme.colorScheme.background
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = backgroundColor,
+            darkIcons = useDarkIcons
+        )
+    }
+
     val galleryImageLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             onEventDispatcher.invoke(NoteScreenContracts.Intent.AddImage(uri.toString()))

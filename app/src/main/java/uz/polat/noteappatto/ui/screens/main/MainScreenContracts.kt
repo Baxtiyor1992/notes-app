@@ -19,15 +19,18 @@ interface MainScreenContracts {
         val isSettingsSheetOpen: Boolean = false,
         val isDarkMode: Boolean = false,
         val notes: List<NoteEntity> = emptyList(),
-        val selectedTopics: List<TopicEntity> = emptyList(),
+        val selectedTopic:Int = 0,
+        val currentLang:String = "en",
+//        val selectedTopics: List<TopicEntity> = emptyList(),
         val topics: List<TopicEntity> = emptyList()
     )
 
     sealed interface Intent {
         data object OnClickAddButton : Intent
         data class OnClickNoteItem(val noteEntity: NoteEntity) : Intent
-        data class OnClickCategory(val topicEntity: TopicEntity) : Intent
+        data class OnClickCategory(val topicEntity: TopicEntity,val index:Int) : Intent
         data class OnToggleThemeMode(val isDarkMode: Boolean) : Intent
+        data class LangChange(val checked:Boolean) : Intent
         object OnDismissSettingsBottomSheet: Intent
         object OnClickSettingsIcon: Intent
         object OnClickAddCategory: Intent

@@ -9,5 +9,6 @@ class LocalStorage @Inject constructor(@ApplicationContext context: Context) : S
 
     var isFirstLaunch by booleans(true)
     var isDarkMode by booleans(false)
+    var language by strings("en")
 }
 

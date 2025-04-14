@@ -3,6 +3,7 @@ package uz.polat.noteappatto.ui.screens.onboarding
 import android.R.attr.lineHeight
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,9 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.orbitmvi.orbit.compose.collectAsState
 import uz.polat.noteappatto.ui.components.StartButton
 import uz.polat.noteappatto.R
+import uz.polat.noteappatto.ui.theme.isDarkMode
 import uz.polat.noteappatto.ui.theme.mainFont
 
 class OnBoardingScreen : Screen {
@@ -47,6 +51,18 @@ fun OnBoardingScreenContent(
     state: State<OnBoardingContracts.UIState>,
     onEventDispatcher: (OnBoardingContracts.Intent) -> Unit
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isDarkMode
+    val backgroundColor = MaterialTheme.colorScheme.background
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = backgroundColor,
+            darkIcons = useDarkIcons
+        )
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()

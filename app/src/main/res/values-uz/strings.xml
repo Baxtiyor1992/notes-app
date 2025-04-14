@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Note app (Atto)</string>
+    <string name="onboarding1">Eng</string>
+    <string name="onboarding2">yaxshi</string>
+    <string name="onboarding3">ilova</string>
+    <string name="onboarding4">qaydlar</string>
+    <string name="onboarding5">uchun</string>
+    <string name="start">Boshlash</string>
+    <string name="main_title">Atto qaydlar</string>
+    <string name="create_a_note">Qayd yaratish</string>
+    <string name="your_quote_here">Iqtibos yozish...</string>
+    <string name="new_topic">Yangi mavzu</string>
+    <string name="name">Nomi</string>
+    <string name="color">Rangi</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="save">Saqlash</string>
+    <string name="title">Sarlavha</string>
+    <string name="confirm_remove_last_item">Bu elementni o\'chirasizmi?</string>
+    <string name="do_you_want_to_delete_note">Bu qaydni o\'chirasizmi?</string>
+    <string name="changes_will_not_be_applied">O\'zgarish amal qilmaydi</string>
+    <string name="yes">Ha</string>
+    <string name="theme">Ilova mavzusi</string>
+    <string name="settings">Sozlamalar</string>
+    <string name="language">Til</string>
+</resources>
