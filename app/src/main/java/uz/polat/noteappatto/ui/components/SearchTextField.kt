@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import uz.polat.noteappatto.ui.theme.plainGreyColor
 
 @Composable
 fun SearchTextField(
@@ -47,7 +48,7 @@ fun SearchTextField(
         maxLines = 1,
         enabled = enabled,
         textStyle = MaterialTheme.typography.bodyMedium
-            .copy(color = MaterialTheme.colorScheme.onBackground),
+            .copy(color = Color.Black),
         visualTransformation = visualTransformation,
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         decorationBox = { innerTextField ->
@@ -55,7 +56,7 @@ fun SearchTextField(
                 Row(
                     modifier = Modifier
 //                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(12.dp))
+                        .background(color = plainGreyColor, shape = RoundedCornerShape(12.dp))
                         .defaultMinSize(minHeight = 50.dp)
                         .padding(start = 12.dp, end = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -70,7 +71,7 @@ fun SearchTextField(
                             Text(
                                 text = hint,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = Color.Black
                             )
                         }
                         innerTextField()
