@@ -1,0 +1,175 @@
+package uz.azadevs.notes.features.note.edit
+
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import org.koin.androidx.compose.koinViewModel
+import uz.azadevs.notes.domain.model.Note
+import uz.azadevs.notes.domain.model.Topic
+
+/**
+ * Created by : Azamat Kalmurzaev
+ * 14/04/25
+ */
+@Composable
+fun EditNoteDialog(
+    note: Note,
+    onUpdateClick: () -> Unit,
+    onDismiss: () -> Unit,
+    viewModel: EditNoteViewModel = koinViewModel()
+) {
+    var title by remember { mutableStateOf(note.title) }
+    var description by remember { mutableStateOf(note.description) }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedTopic by remember { mutableStateOf<Topic?>(null) }
+    var topicId by remember {
+        mutableIntStateOf(0)
+    }
+    val state = viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    if (state.value.error != null) {
+        Toast.makeText(context, state.value.error, Toast.LENGTH_SHORT).show()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getNoteById(note.id)
+        viewModel.getTopics()
+    }
+    LaunchedEffect(state.value.note, state.value.topics) {
+        val loadedNote = state.value.note
+        if (loadedNote != null && state.value.topics.isNotEmpty()) {
+            title = loadedNote.title
+            description = loadedNote.description
+            selectedTopic = state.value.topics.find { it.id == loadedNote.topicId }
+            topicId = loadedNote.topicId
+            expanded = false
+        }
+    }
+
+    if (state.value.isLoading) {
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            Button(
+                onClick = {
+                    selectedTopic?.let {
+                        viewModel.updateNote(
+                            note.copy(
+                                title = title,
+                                description = description,
+                                topicId = topicId,
+                                topic = selectedTopic?.name ?: ""
+                            )
+                        )
+                        onUpdateClick()
+                    }
+                },
+                enabled = title.isNotBlank() && selectedTopic != null
+            ) {
+                Text("Update")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        },
+        title = { Text("Edit Note") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("Title") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Box {
+                    OutlinedTextField(
+                        value = selectedTopic?.name ?: "Select Topic",
+                        onValueChange = {},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { expanded = true }
+                            .focusable(false),
+                        readOnly = true,
+                        label = { Text("Topic") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = null,
+                                modifier = Modifier.clickable { expanded = true }
+                            )
+                        }
+                    )
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        state.value.topics.forEach { topic ->
+                            DropdownMenuItem(
+                                text = { Text(topic.name) },
+                                onClick = {
+                                    selectedTopic = topic
+                                    topicId= topic.id
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        modifier = Modifier.fillMaxWidth(0.9f),
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    )
+}
