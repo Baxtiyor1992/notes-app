@@ -18,6 +18,7 @@ interface MainScreenContracts {
         val isAddTopicSheetOpen: Boolean = false,
         val isSettingsSheetOpen: Boolean = false,
         val isDarkMode: Boolean = false,
+        val searchText: String = "",
         val notes: List<NoteEntity> = emptyList(),
         val selectedTopic:Int = 0,
         val currentLang:String = "en",
@@ -31,6 +32,7 @@ interface MainScreenContracts {
         data class OnClickCategory(val topicEntity: TopicEntity,val index:Int) : Intent
         data class OnToggleThemeMode(val isDarkMode: Boolean) : Intent
         data class LangChange(val checked:Boolean) : Intent
+        data class SearchTextChange(val searchText: String) : Intent
         object OnDismissSettingsBottomSheet: Intent
         object OnClickSettingsIcon: Intent
         object OnClickAddCategory: Intent

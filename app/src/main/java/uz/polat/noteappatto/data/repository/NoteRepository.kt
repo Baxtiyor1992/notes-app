@@ -18,6 +18,7 @@ interface NoteRepository {
     suspend fun updateNote(noteEntity: NoteEntity):Flow<Unit>
     suspend fun deleteNote(noteEntity: NoteEntity): Flow<Unit>
     suspend fun getNotesByTopic(topicEntity: TopicEntity): Flow<List<NoteEntity>>
+    suspend fun searchNotes(query: String): Flow<List<NoteEntity>>
 
 
     suspend fun copyImageToAppStorage(uri: Uri): Flow<Uri>

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -54,6 +55,7 @@ import uz.polat.noteappatto.R
 import uz.polat.noteappatto.ui.components.AddButton
 import uz.polat.noteappatto.ui.components.CategoryItem
 import uz.polat.noteappatto.ui.components.NoteItem
+import uz.polat.noteappatto.ui.components.SearchTextField
 import uz.polat.noteappatto.ui.components.SettingsBottomSheet
 import uz.polat.noteappatto.ui.components.TopicAddBottomSheet
 import uz.polat.noteappatto.ui.theme.isDarkMode
@@ -128,13 +130,16 @@ fun MainScreenContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
 
-                Text(
-                    text = stringResource(R.string.main_title),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                SearchTextField(
+                    modifier = Modifier.weight(1f),
+                    value = state.value.searchText,
+                    hint = "Search",
+                    onValueChange = {
+                        onEventDispatcher.invoke(MainScreenContracts.Intent.SearchTextChange(it))
+                    }
                 )
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(16.dp))
 
                 IconButton(onClick = {
                     onEventDispatcher.invoke(MainScreenContracts.Intent.OnClickSettingsIcon)
@@ -170,30 +175,33 @@ fun MainScreenContent(
                 .background(MaterialTheme.colorScheme.background)
         ) {
 
-            LazyRow(contentPadding = PaddingValues(start = 24.dp)) {
-                items(
-                    state.value.topics.size,
-                    key = { state.value.topics[it].id }
-                ) {
-                    CategoryItem(
-                        topic = state.value.topics[it],
-                        isSelected = it == state.value.selectedTopic,
-
+            if(state.value.searchText.isEmpty()){
+                LazyRow(contentPadding = PaddingValues(start = 24.dp)) {
+                    items(
+                        state.value.topics.size,
+                        key = { state.value.topics[it].id }
                     ) {
-                        if (state.value.topics[it].name == TOPIC_ADD) {
-                            Timber.tag("TTT").d("TOPIC_ADD clicked")
-                            onEventDispatcher.invoke(
-                                MainScreenContracts.Intent.OnClickAddCategory
-                            )
-                        } else {
-                            onEventDispatcher.invoke(
-                                MainScreenContracts.Intent.OnClickCategory(state.value.topics[it],it)
-                            )
+                        CategoryItem(
+                            topic = state.value.topics[it],
+                            isSelected = it == state.value.selectedTopic,
+
+                            ) {
+                            if (state.value.topics[it].name == TOPIC_ADD) {
+                                Timber.tag("TTT").d("TOPIC_ADD clicked")
+                                onEventDispatcher.invoke(
+                                    MainScreenContracts.Intent.OnClickAddCategory
+                                )
+                            } else {
+                                onEventDispatcher.invoke(
+                                    MainScreenContracts.Intent.OnClickCategory(state.value.topics[it],it)
+                                )
+                            }
                         }
+                        Spacer(modifier = Modifier.padding(8.dp))
                     }
-                    Spacer(modifier = Modifier.padding(8.dp))
                 }
             }
+
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -233,7 +241,7 @@ fun MainScreenContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 LottieAnimation(
-                    modifier = Modifier.size(300.dp),
+                    modifier = Modifier.size(250.dp),
                     composition = composition,
                     iterations = LottieConstants.IterateForever,
                     restartOnPlay = true

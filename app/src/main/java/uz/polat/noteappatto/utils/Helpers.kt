@@ -3,6 +3,8 @@ package uz.polat.noteappatto.utils
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import uz.polat.noteappatto.R
 import uz.polat.noteappatto.ui.theme.color1
 import uz.polat.noteappatto.ui.theme.color10
 import uz.polat.noteappatto.ui.theme.color11

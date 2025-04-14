@@ -103,6 +103,16 @@ class MainScreenVM @Inject constructor(
                 }
                 reduce { state.copy(currentLang = if (intent.checked) "uz" else "en") }
             }
+
+            is Intent.SearchTextChange -> {
+                reduce { state.copy(searchText = intent.searchText, selectedTopic = 0) }
+                repository.searchNotes(intent.searchText.trim())
+                    .catch { postSideEffect(MainScreenContracts.SideEffect(it.message.toString())) }
+                    .onEach {
+                        reduce { state.copy(notes = it) }
+                    }.launchIn(viewModelScope)
+
+            }
         }
     }
 

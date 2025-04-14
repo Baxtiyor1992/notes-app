@@ -19,13 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import uz.polat.noteappatto.R
 import uz.polat.noteappatto.data.source.local.room.entity.TopicEntity
 import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.utils.TOPIC_ADD
-import uz.polat.noteappatto.utils.TOPIC_ALL
 import uz.polat.noteappatto.utils.TOPIC_ALL_ID
 
 
@@ -57,7 +58,7 @@ fun CategoryItem(
                 )
         }else{
             Text(
-                text = topic.name,
+                text = if(isAllTopic) stringResource(R.string.all) else topic.name,
                 style = MaterialTheme.typography.bodyLarge,
                 color = if(isAllTopic && isSelected) Color.Black else MaterialTheme.colorScheme.onBackground
             )

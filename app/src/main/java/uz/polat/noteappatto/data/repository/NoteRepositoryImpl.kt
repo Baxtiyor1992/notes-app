@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.room.Query
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -73,6 +74,10 @@ class NoteRepositoryImpl @Inject constructor(
     override suspend fun getNotesByTopic(topicEntity: TopicEntity): Flow<List<NoteEntity>> =
         noteDao.getAllNotes()
             .map { notes -> notes.filter { it.topicIds.contains(topicEntity.id) } }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchNotes(query: String): Flow<List<NoteEntity>> =
+        noteDao.searchNotes(query).flowOn(Dispatchers.IO)
+
 
     override suspend fun copyImageToAppStorage(uri: Uri): Flow<Uri> = flow {
         val imageName = "image_${System.currentTimeMillis()}.jpg"
