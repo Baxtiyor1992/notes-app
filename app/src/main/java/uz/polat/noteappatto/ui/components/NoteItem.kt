@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,16 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontVariation.weight
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import uz.polat.noteappatto.data.source.local.room.entity.NoteData
 import uz.polat.noteappatto.data.source.local.room.entity.NoteEntity
-import uz.polat.noteappatto.ui.theme.defaultColor
-import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.utils.getDateTimeAsString
 
 
@@ -43,10 +39,9 @@ fun NoteItem(
     Column {
         Text(
             text = getDateTimeAsString(noteEntity.createdTime),
-            fontSize = 12.sp,
-            fontFamily = mainFont,
-            color = Color(0xFF6f6f6f),
-            modifier = Modifier.padding(start = 24.dp)
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = 24.dp, bottom = 4.dp)
         )
 
         Row(
@@ -55,12 +50,12 @@ fun NoteItem(
         ) {
             Box(
                 modifier = Modifier
-                    .alpha(0.1f)
+                    .alpha(0.4f)
                     .padding(start = 24.dp)
                     .fillMaxHeight()
                     .width(8.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xFF6f6f6f))
+                    .background(MaterialTheme.colorScheme.onSurfaceVariant)
             )
 
             Box(
@@ -72,12 +67,14 @@ fun NoteItem(
                     .clickable { onClickNoteItem.invoke() }
             ) {
 
-                Row (modifier = Modifier.matchParentSize()) {
-                    if(noteEntity.colors.isEmpty()){
-                        Box(modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = defaultColor))
-                    }else{
+                Row(modifier = Modifier.matchParentSize()) {
+                    if (noteEntity.colors.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        )
+                    } else {
                         noteEntity.colors.forEach { color ->
                             Box(
                                 modifier = Modifier
@@ -98,19 +95,18 @@ fun NoteItem(
 
                     Text(
                         text = (noteEntity.noteDatas.first() as NoteData.Title).title,
-                        fontSize = 24.sp,
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Color.Black
                     )
 
-                    if (noteEntity.noteDatas.size > 1){
+                    if (noteEntity.noteDatas.size > 1) {
                         when (val it = noteEntity.noteDatas[1]) {
                             is NoteData.Text -> {
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     text = it.text,
-                                    fontSize = 18.sp,
-                                    fontFamily = mainFont,
+                                    color = Color.Black,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     overflow = TextOverflow.Ellipsis
                                 )
                             }
@@ -126,7 +122,7 @@ fun NoteItem(
                             }
 
                             is NoteData.QuotedText -> {
-
+                                Spacer(modifier = Modifier.height(16.dp))
                                 QuoteText(
                                     text = it.quote,
                                     isFocusable = false,

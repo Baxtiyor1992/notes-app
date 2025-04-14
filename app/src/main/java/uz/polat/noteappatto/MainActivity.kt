@@ -22,9 +22,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import uz.polat.noteappatto.data.repository.NoteRepository
+import uz.polat.noteappatto.data.source.local.sharedPref.LocalStorage
 import uz.polat.noteappatto.ui.screens.main.MainScreen
 import uz.polat.noteappatto.ui.screens.onboarding.OnBoardingScreen
 import uz.polat.noteappatto.ui.theme.NoteAppAttoTheme
+import uz.polat.noteappatto.ui.theme.changeAppToDarkMode
 import uz.polat.noteappatto.utils.navigation.NavigationHandler
 import javax.inject.Inject
 
@@ -37,10 +39,14 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var repository: NoteRepository
+    @Inject
+    lateinit var localStorage: LocalStorage
 
     @OptIn(ExperimentalVoyagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        changeAppToDarkMode(localStorage.isDarkMode)
 
         setContent {
             NoteAppAttoTheme {

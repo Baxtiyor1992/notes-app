@@ -8,5 +8,6 @@ import javax.inject.Inject
 class LocalStorage @Inject constructor(@ApplicationContext context: Context) : SharedPreferenceHelper(context) {
 
     var isFirstLaunch by booleans(true)
+    var isDarkMode by booleans(false)
 }
 

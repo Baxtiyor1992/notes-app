@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -27,13 +28,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import uz.polat.noteappatto.R
-import uz.polat.noteappatto.ui.theme.mainFont
 
 
 @Preview
@@ -41,7 +39,7 @@ import uz.polat.noteappatto.ui.theme.mainFont
 fun QuoteText(
     modifier: Modifier = Modifier.fillMaxWidth(),
     text: String = "",
-    color: Color = Color(0xFFcefe48),
+    color: Color = MaterialTheme.colorScheme.primary,
     isFocusable: Boolean = true,
     onValueChange: (String) -> Unit = {}
 ) {
@@ -100,23 +98,16 @@ fun QuoteText(
                 value = text,
                 onValueChange = onValueChange,
                 enabled = isFocusable,
-                textStyle = TextStyle(
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = mainFont,
-                ),
+                textStyle = MaterialTheme.typography.bodyLarge
+                    .copy(color = Color.Black),
                 decorationBox = { innerTextField ->
                     Box(modifier = Modifier.fillMaxWidth()) {
                         if (text.isEmpty()) {
                             Text(
-                                text = "Your quote here...",
-                                style = TextStyle(
-                                    color = Color.Gray,
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    fontFamily = mainFont,
-                                ),
+                                text = stringResource(R.string.your_quote_here),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+
 
                                 )
                         }

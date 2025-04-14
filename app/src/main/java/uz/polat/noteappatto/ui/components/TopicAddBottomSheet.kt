@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -33,12 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.room.util.TableInfo
+import uz.polat.noteappatto.R
 import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.ui.theme.plainGreyColor
 import uz.polat.noteappatto.utils.TOPIC_COLORS
@@ -69,12 +72,9 @@ fun TopicAddBottomSheet(
 
             var textValue by remember { mutableStateOf("") }
             Text(
-                text = "New Topic",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.SemiBold,
+                text = stringResource(R.string.new_topic),
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Start),
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -86,12 +86,12 @@ fun TopicAddBottomSheet(
                     .padding(vertical = 8.dp)
             ) {
 
-
                 TextField(
                     value = textValue,
                     onValueChange = {
                         textValue = it
                     },
+                    textStyle = MaterialTheme.typography.bodyLarge,
                     singleLine = true,
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
@@ -101,9 +101,14 @@ fun TopicAddBottomSheet(
                         cursorColor = Color.Black,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     label = {
-                        Text("Name")
+                        Text(stringResource(R.string.name),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Black
+                            )
                     }
                 )
             }
@@ -114,11 +119,15 @@ fun TopicAddBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = plainGreyColor, shape = RoundedCornerShape(24.dp))
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 16.dp)
             ) {
 
-                Text("Color",
-                    modifier = Modifier.padding(horizontal = 16.dp))
+                Text(
+                    stringResource(R.string.color),
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black
+                    )
 
                 CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
                     LazyRow(
@@ -136,7 +145,7 @@ fun TopicAddBottomSheet(
                                     .background(color = TOPIC_COLORS[it], shape = CircleShape)
                                     .border(
                                         width = if (TOPIC_COLORS[it] == selectedColor) 4.dp else 0.dp,
-                                        color = if(TOPIC_COLORS[it] == selectedColor) Color.Black else Color.Transparent,
+                                        color = if (TOPIC_COLORS[it] == selectedColor) Color.Black else Color.Transparent,
                                         shape = CircleShape
                                     )
                                     .clickable {

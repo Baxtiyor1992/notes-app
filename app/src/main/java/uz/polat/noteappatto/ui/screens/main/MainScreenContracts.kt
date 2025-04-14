@@ -16,6 +16,8 @@ interface MainScreenContracts {
     data class UIState(
         val initState: Int = 0,
         val isAddTopicSheetOpen: Boolean = false,
+        val isSettingsSheetOpen: Boolean = false,
+        val isDarkMode: Boolean = false,
         val notes: List<NoteEntity> = emptyList(),
         val selectedTopics: List<TopicEntity> = emptyList(),
         val topics: List<TopicEntity> = emptyList()
@@ -25,8 +27,11 @@ interface MainScreenContracts {
         data object OnClickAddButton : Intent
         data class OnClickNoteItem(val noteEntity: NoteEntity) : Intent
         data class OnClickCategory(val topicEntity: TopicEntity) : Intent
+        data class OnToggleThemeMode(val isDarkMode: Boolean) : Intent
+        object OnDismissSettingsBottomSheet: Intent
+        object OnClickSettingsIcon: Intent
         object OnClickAddCategory: Intent
-        object OnDismissClickBottomSheet: Intent
+        object OnDismissTopicAddBottomSheet: Intent
         data class OnClickSaveTopic(val name: String,val color:Color): Intent
     }
 

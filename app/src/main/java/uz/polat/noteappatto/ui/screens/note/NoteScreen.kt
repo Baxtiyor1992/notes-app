@@ -27,12 +27,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,13 +57,11 @@ import uz.polat.noteappatto.ui.components.CategoryItem
 import uz.polat.noteappatto.ui.components.CustomDialog
 import uz.polat.noteappatto.ui.components.ImageView
 import uz.polat.noteappatto.ui.components.QuoteText
+import uz.polat.noteappatto.ui.components.RoundedActionButton
 import uz.polat.noteappatto.ui.components.SaveCancelButton
 import uz.polat.noteappatto.ui.components.TopicAddBottomSheet
-import uz.polat.noteappatto.ui.screens.main.MainScreenContracts
 import uz.polat.noteappatto.utils.TOPIC_ADD
 import uz.polat.noteappatto.utils.showToast
-import java.nio.file.Files.size
-import java.nio.file.WatchEvent
 
 
 class NoteScreen(
@@ -101,7 +99,7 @@ fun NoteScreenContent(
     if (state.value.isAddTopicBottomSheetOpen) {
         TopicAddBottomSheet(
             onClickSave = { name, color ->
-                onEventDispatcher(NoteScreenContracts.Intent.OnClickSaveTopic( name,color))
+                onEventDispatcher(NoteScreenContracts.Intent.OnClickSaveTopic(name, color))
             },
             onDismissRequest = {
                 onEventDispatcher(NoteScreenContracts.Intent.OnDismissClickBottomSheet)
@@ -112,7 +110,7 @@ fun NoteScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
             .imePadding(),
@@ -123,7 +121,7 @@ fun NoteScreenContent(
         LazyRow(
 //            modifier = Modifier.weight(0.1f),
             contentPadding = PaddingValues(start = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(
                 state.value.topics.size,
@@ -154,13 +152,16 @@ fun NoteScreenContent(
                 .weight(.7f)
                 .padding(16.dp)
                 .clip(RoundedCornerShape(30.dp))
-                .border(BorderStroke(1.dp, Color.Black), RoundedCornerShape(30.dp))
+                .border(
+                    BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
+                    RoundedCornerShape(30.dp)
+                )
         ) {
 
             val listState = rememberLazyListState()
             LaunchedEffect(state.value.noteDatas.size) {
                 if (state.value.noteDatas.isNotEmpty()) {
-                    listState.animateScrollToItem(state.value.noteDatas.lastIndex )
+                    listState.animateScrollToItem(state.value.noteDatas.lastIndex)
                 }
             }
 
@@ -177,8 +178,7 @@ fun NoteScreenContent(
                             var value by remember { mutableStateOf(current.title) }
                             AppTextField(
                                 value = value,
-                                textSize = 32.sp,
-                                placeHolder = "Title",
+                                placeHolder = stringResource(R.string.title),
                             ) {
                                 value = it
                                 current.title = it
@@ -190,7 +190,7 @@ fun NoteScreenContent(
                             AppTextField(
                                 modifier = Modifier.imePadding(),
                                 value = value,
-                                textSize = 24.sp,
+                                textSize = 24,
                                 placeHolder = "your text here..."
                             ) {
                                 value = it
@@ -234,17 +234,13 @@ fun NoteScreenContent(
                 Spacer(modifier = Modifier.weight(0.5f))
 
                 if (!showDeleteButton) {
-                    Row(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFF21212f))
-                            .clickable { onEventDispatcher(NoteScreenContracts.Intent.DeleteNote) }
-                            .padding(16.dp)
+                    RoundedActionButton (
+                        onClick = {onEventDispatcher(NoteScreenContracts.Intent.DeleteNote)},
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_delete),
                             contentDescription = null,
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.background
                         )
                     }
                     Spacer(modifier = Modifier.width(24.dp))
@@ -253,14 +249,14 @@ fun NoteScreenContent(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
-                        .background(Color(0xFF21212f))
+                        .background(MaterialTheme.colorScheme.onBackground)
                         .padding(horizontal = 24.dp, vertical = 16.dp)
                 ) {
                     Icon(
                         modifier = Modifier.clickable { onEventDispatcher(NoteScreenContracts.Intent.AddText) },
                         painter = painterResource(id = R.drawable.ic_text),
                         contentDescription = null,
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.background
                     )
                     Spacer(modifier = Modifier.width(24.dp))
 
@@ -268,7 +264,7 @@ fun NoteScreenContent(
                         modifier = Modifier.clickable { galleryImageLauncher.launch("image/*") },
                         painter = painterResource(id = R.drawable.ic_picture),
                         contentDescription = null,
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.background
                     )
                     Spacer(modifier = Modifier.width(24.dp))
 
@@ -278,23 +274,19 @@ fun NoteScreenContent(
                         },
                         painter = painterResource(id = R.drawable.ic_quote),
                         contentDescription = null,
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.background
                     )
                 }
 
                 Spacer(modifier = Modifier.width(24.dp))
 
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color(0xFF21212f))
-                        .clickable { onEventDispatcher(NoteScreenContracts.Intent.OnClickRemoveLast) }
-                        .padding(16.dp)
+                RoundedActionButton (
+                    onClick = {onEventDispatcher(NoteScreenContracts.Intent.OnClickRemoveLast)}
                 ) {
                     Icon(
                         imageVector = Icons.Default.Clear,
                         contentDescription = null,
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.background
                     )
                 }
 
@@ -319,7 +311,7 @@ fun NoteScreenContent(
     // Dialogs for confirmation
     if (state.value.showRemoveItemDialog)
         CustomDialog(
-            title = "Confirm remove last item",
+            title = stringResource(R.string.confirm_remove_last_item),
             onConfirm = {
                 onEventDispatcher(NoteScreenContracts.Intent.ConfirmDeleteLastItem)
                 onEventDispatcher(NoteScreenContracts.Intent.HideRemoveItemConfirmDialog)
@@ -329,7 +321,7 @@ fun NoteScreenContent(
 
     if (state.value.showDeleteNoteDialog)
         CustomDialog(
-            title = "Do you want to delete note?",
+            title = stringResource(R.string.do_you_want_to_delete_note),
             onConfirm = {
                 onEventDispatcher(NoteScreenContracts.Intent.ConfirmDeleteNote)
                 onEventDispatcher(NoteScreenContracts.Intent.HideDeleteNoteConfirmDialog)
@@ -339,7 +331,7 @@ fun NoteScreenContent(
 
     if (state.value.showCancelDialog)
         CustomDialog(
-            title = "Changes will not be applied",
+            title = stringResource(R.string.changes_will_not_be_applied),
             onConfirm = {
                 onEventDispatcher(NoteScreenContracts.Intent.ConfirmCancel)
                 onEventDispatcher(NoteScreenContracts.Intent.HideCancelDialog)

@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -14,7 +13,10 @@ import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import uz.polat.noteappatto.data.repository.NoteRepository
 import uz.polat.noteappatto.data.source.local.room.entity.TopicEntity
-import uz.polat.noteappatto.ui.screens.note.NoteScreenContracts
+import uz.polat.noteappatto.data.source.local.sharedPref.LocalStorage
+import uz.polat.noteappatto.ui.screens.main.MainScreenContracts.*
+import uz.polat.noteappatto.ui.theme.changeAppToDarkMode
+import uz.polat.noteappatto.ui.theme.isDarkMode
 import uz.polat.noteappatto.utils.TOPIC_ADD
 import uz.polat.noteappatto.utils.TOPIC_ALL
 import javax.inject.Inject
@@ -23,26 +25,27 @@ import javax.inject.Inject
 @HiltViewModel
 class MainScreenVM @Inject constructor(
     private val directions: MainScreenContracts.Directions,
-    private val repository: NoteRepository
+    private val repository: NoteRepository,
+    private val localStorage: LocalStorage
 ) : MainScreenContracts.ViewModel, ViewModel() {
 
 
     override fun onEventDispatcher(intent: MainScreenContracts.Intent) = intent {
         when (intent) {
-            is MainScreenContracts.Intent.OnClickAddButton -> {
+            is Intent.OnClickAddButton -> {
                 directions.moveToAddNoteScreen(null)
             }
 
-            is MainScreenContracts.Intent.OnClickNoteItem -> {
+            is Intent.OnClickNoteItem -> {
                 directions.moveToAddNoteScreen(intent.noteEntity)
             }
 
-            is MainScreenContracts.Intent.OnClickCategory -> {
+            is Intent.OnClickCategory -> {
                 if (intent.topicEntity.name == TOPIC_ALL) {
                     getNotes()
                 }else{
                     repository.getNotesByTopic(intent.topicEntity)
-                        .catch { postSideEffect(MainScreenContracts.SideEffect(it.message.toString())) }
+                        .catch { postSideEffect(SideEffect(it.message.toString())) }
                         .onEach {
                             Timber.tag("TTT").d("getNotesByTopic ${intent.topicEntity.name}: $it")
                             reduce { state.copy(notes = it) }
@@ -51,24 +54,37 @@ class MainScreenVM @Inject constructor(
 
             }
 
-            MainScreenContracts.Intent.OnClickAddCategory -> {
+            Intent.OnClickAddCategory -> {
                 reduce { state.copy(isAddTopicSheetOpen = true) }
             }
 
-            MainScreenContracts.Intent.OnDismissClickBottomSheet -> {
+            Intent.OnDismissTopicAddBottomSheet -> {
                 reduce { state.copy(isAddTopicSheetOpen = false) }
             }
 
-            is MainScreenContracts.Intent.OnClickSaveTopic -> {
+            is Intent.OnClickSaveTopic -> {
                 repository.createTopic(TopicEntity(
                     name = intent.name,
                     color = intent.color.value.toLong()
                 ))
-                    .catch { postSideEffect(MainScreenContracts.SideEffect(it.message.toString())) }
+                    .catch { postSideEffect(SideEffect(it.message.toString())) }
                     .onEach {
 //                        getTopics()
                         reduce { state.copy(isAddTopicSheetOpen = false) }
                     }.launchIn(viewModelScope)
+            }
+
+            Intent.OnDismissSettingsBottomSheet -> {
+                reduce { state.copy(isSettingsSheetOpen = false) }
+            }
+            is Intent.OnToggleThemeMode -> {
+                changeAppToDarkMode(intent.isDarkMode)
+                localStorage.isDarkMode = intent.isDarkMode
+                reduce { state.copy(isDarkMode = isDarkMode) }
+            }
+
+            Intent.OnClickSettingsIcon -> {
+                reduce { state.copy(isSettingsSheetOpen = true) }
             }
         }
     }
@@ -101,5 +117,8 @@ class MainScreenVM @Inject constructor(
 
     }
 
-    override val container = container<MainScreenContracts.UIState, MainScreenContracts.SideEffect>(MainScreenContracts.UIState())
+    override val container =
+        container<MainScreenContracts.UIState, MainScreenContracts.SideEffect>(
+            MainScreenContracts.UIState().copy(isDarkMode = localStorage.isDarkMode)
+        )
 }

@@ -5,13 +5,17 @@ import androidx.compose.ui.graphics.Color
 val lightPrimary = Color(0xFFcefe48)
 val lightBackground = Color(0xFFFFFFFF)
 val lightOnBackground = Color(0xFF000000)
+val lightOnSurfaceVariant = Color(0xFFBFBEBE)
+val lightSurface = Color(0xFFFFFFFF)
+
 
 val darkPrimary = Color(0xFFcefe48)
 val darkBackground = Color(0xFF000000)
 val darkOnBackground = Color(0xFFFFFFFF)
+val darkOnSurfaceVariant = Color(0xFFBFBEBE)
+val darkSurface = Color(0xFF454545)
 
 val plainGreyColor = Color(0xFFDBDBDB)
-val defaultColor = Color(0xFFBFBEBE)
 
 val color1 = Color(0xFFFFFFE0) // Light Ivory
 val color2 = Color(0xFFF3ECAD) // Soft Lemon
@@ -32,3 +36,8 @@ val color16 = Color(0xFF935902) // Pink
 val color17 = Color(0xFF9C27B0) // Purple
 val color18 = Color(0xFF3F51B5) // Indigo
 val color19 = Color(0xFF1A237E) // Deep Indigo
+
+
+val BlueSky= Color(0xFF4478a9)
+val NightSky =  Color(0xFF333333)
+val BorderColor = Color(0x40000000)

@@ -20,7 +20,6 @@ fun ImageView(
 ) {
     Box(
         modifier = modifier
-//            .padding(24.dp)
             .padding(vertical = 4.dp)
             .clip(RoundedCornerShape(30.dp))
     ) {

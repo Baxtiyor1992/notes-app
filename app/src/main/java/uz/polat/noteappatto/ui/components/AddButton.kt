@@ -38,6 +38,7 @@ fun AddButton(
         Icon(
             modifier = Modifier.align(Alignment.Center).size(32.dp),
             imageVector = Icons.Rounded.Add,
+            tint = Color.Black,
             contentDescription = null
         )
     }

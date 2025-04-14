@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +22,7 @@ fun RoundedActionButton(
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFF21212f))
+            .background(MaterialTheme.colorScheme.onBackground)
             .clickable { onClick()}
             .padding(16.dp)
     ) {

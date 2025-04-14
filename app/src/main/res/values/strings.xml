@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Note app (Atto)</string>
+    <string name="onboarding1">The</string>
+    <string name="onboarding2">best</string>
+    <string name="onboarding3">app</string>
+    <string name="onboarding4">for</string>
+    <string name="onboarding5">notes</string>
+    <string name="start">Start</string>
+    <string name="main_title">Atto notes</string>
+    <string name="create_a_note">Create a note</string>
+    <string name="your_quote_here">Your quote here...</string>
+    <string name="new_topic">New Topic</string>
+    <string name="name">Name</string>
+    <string name="color">Color</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="confirm_remove_last_item">Do you want to remove last item?</string>
+    <string name="do_you_want_to_delete_note">Do you want to delete this note?</string>
+    <string name="changes_will_not_be_applied">Changes will not be applied</string>
+    <string name="yes">Yes</string>
+    <string name="theme">Theme</string>
+    <string name="settings">Settings</string>
 </resources>

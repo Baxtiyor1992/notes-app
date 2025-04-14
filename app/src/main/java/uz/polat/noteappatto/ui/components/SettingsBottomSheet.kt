@@ -1,5 +1,6 @@
 package uz.polat.noteappatto.ui.components
 
+import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -33,12 +36,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.room.util.TableInfo
+import uz.polat.noteappatto.R
 import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.ui.theme.plainGreyColor
 import uz.polat.noteappatto.utils.TOPIC_COLORS
@@ -46,12 +51,13 @@ import uz.polat.noteappatto.utils.TOPIC_COLORS
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SettingsBottomSheet(
+    isDarkMode: Boolean,
     onDismissRequest: () -> Unit,
-    onClickSave: (String, Color) -> Unit,
+    onCheckedChanged: (Boolean) -> Unit,
 ) {
 
     ModalBottomSheet(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
         onDismissRequest = onDismissRequest,
         sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true
@@ -66,16 +72,33 @@ fun SettingsBottomSheet(
         ) {
 
             Text(
-                text = "Settings",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.SemiBold,
+                text = stringResource(R.string.settings),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.align(Alignment.Start),
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp
+
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding( vertical = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.theme),
+                    style = MaterialTheme.typography.bodyLarge
+                        .copy(color = MaterialTheme.colorScheme.onBackground)
+                )
+
+                DarkModeSwitch(
+                    checked = isDarkMode,
+                    modifier = Modifier,
+                    onCheckedChanged = onCheckedChanged)
+            }
 
 
             Spacer(modifier = Modifier.height(16.dp))

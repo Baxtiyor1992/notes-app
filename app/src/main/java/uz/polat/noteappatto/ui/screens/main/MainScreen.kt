@@ -18,9 +18,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,11 +32,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import com.airbnb.lottie.compose.LottieAnimation
@@ -51,8 +49,8 @@ import uz.polat.noteappatto.R
 import uz.polat.noteappatto.ui.components.AddButton
 import uz.polat.noteappatto.ui.components.CategoryItem
 import uz.polat.noteappatto.ui.components.NoteItem
+import uz.polat.noteappatto.ui.components.SettingsBottomSheet
 import uz.polat.noteappatto.ui.components.TopicAddBottomSheet
-import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.utils.TOPIC_ADD
 
 class MainScreen : Screen {
@@ -81,7 +79,19 @@ fun MainScreenContent(
                 onEventDispatcher(MainScreenContracts.Intent.OnClickSaveTopic( name,color))
             },
             onDismissRequest = {
-                onEventDispatcher(MainScreenContracts.Intent.OnDismissClickBottomSheet)
+                onEventDispatcher(MainScreenContracts.Intent.OnDismissTopicAddBottomSheet)
+            }
+        )
+    }
+
+    if (state.value.isSettingsSheetOpen) {
+        SettingsBottomSheet(
+            isDarkMode = state.value.isDarkMode,
+            onCheckedChanged = {
+                onEventDispatcher.invoke(MainScreenContracts.Intent.OnToggleThemeMode(it))
+            },
+            onDismissRequest = {
+                onEventDispatcher.invoke(MainScreenContracts.Intent.OnDismissSettingsBottomSheet)
             }
         )
     }
@@ -91,24 +101,26 @@ fun MainScreenContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(top = 24.dp, start = 16.dp, end = 8.dp, bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
 
                 Text(
-                    text = "your notes",
-                    fontSize = 40.sp,
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.SemiBold,
+                    text = stringResource(R.string.main_title),
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    onEventDispatcher.invoke(MainScreenContracts.Intent.OnClickSettingsIcon)
+                }) {
                     Icon(
                         imageVector = Icons.Rounded.Settings,
                         contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
 
@@ -118,7 +130,6 @@ fun MainScreenContent(
             AddButton(
                 modifier = Modifier.padding(8.dp)
             ) {
-
                 if (isClicked) {
                     isClicked = false
                     onEventDispatcher.invoke(MainScreenContracts.Intent.OnClickAddButton)
@@ -134,7 +145,7 @@ fun MainScreenContent(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
         ) {
 
             LazyRow(contentPadding = PaddingValues(start = 24.dp)) {
@@ -208,11 +219,9 @@ fun MainScreenContent(
                 )
 
                 Text(
-                    text = "Create a note",
-                    fontSize = 24.sp,
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Gray
+                    text = stringResource(R.string.create_a_note),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

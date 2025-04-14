@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import uz.polat.noteappatto.data.source.local.room.entity.TopicEntity
 import uz.polat.noteappatto.ui.theme.mainFont
 import uz.polat.noteappatto.utils.TOPIC_ADD
 import uz.polat.noteappatto.utils.TOPIC_ALL
+import uz.polat.noteappatto.utils.TOPIC_ALL_ID
 
 
 @Composable
@@ -33,25 +35,31 @@ fun CategoryItem(
     isSelected: Boolean = false,
     onClick: () -> Unit = {}
 ) {
-    val isAddTopic = topic.name == "+"
-    val selectedColor = if(topic.name == TOPIC_ALL) Color(0xFFcefe48) else Color(topic.color.toULong())
+    val isAddTopic = topic.name == TOPIC_ADD
+    val isAllTopic = topic.id == TOPIC_ALL_ID
+    val selectedColor = if(isAllTopic) MaterialTheme.colorScheme.primary
+        else Color(topic.color.toULong())
     Box(
         modifier = Modifier
-            .border(BorderStroke(1.dp, Color.Black), if (isAddTopic) CircleShape else RoundedCornerShape(8.dp))
+            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
+                if (isAddTopic) CircleShape else RoundedCornerShape(8.dp))
             .clip(if (isAddTopic) CircleShape else RoundedCornerShape(8.dp))
             .background(if (isSelected) selectedColor else Color.Transparent)
             .clickable { onClick.invoke() }
-            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .padding(vertical = if(isAddTopic) 8.dp else 12.dp, horizontal = 16.dp)
     ) {
 
         if(isAddTopic){
-            Icon(imageVector = Icons.Rounded.Add,contentDescription = null)
+            Icon(imageVector = Icons.Rounded.Add,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(0.dp)
+                )
         }else{
             Text(
-                text = "${topic.name}",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp
+                text = topic.name,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if(isAllTopic && isSelected) Color.Black else MaterialTheme.colorScheme.onBackground
             )
         }
 
